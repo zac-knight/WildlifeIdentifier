@@ -56,6 +56,10 @@ target-version = "py312"
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM"]
 
+[tool.ruff.lint.per-file-ignores]
+# This file is mostly a Markdown template, whose table rows cannot be wrapped.
+"data/make_dataset_card.py" = ["E501"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 markers = ["train: needs the optional training dependencies"]
