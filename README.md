@@ -12,7 +12,7 @@ This README is a skeleton and will grow as the project is built.
 cd web && npm install && npm run dev
 
 # Machine learning project
-cd ml && uv sync && uv run pytest
+cd ml && uv sync --extra train --extra climate && uv run pytest
 ```
 
 ## Project layout

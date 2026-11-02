@@ -41,3 +41,5 @@ yarn-error.log*
 next-env.d.ts
 test-results
 playwright-report
+# Local model files. Production loads these from Hugging Face Hub.
+public/models
