@@ -791,20 +791,6 @@ wheels = [
 ]
 
 [[package]]
-name = "onnxconverter-common"
-version = "1.16.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "numpy" },
-    { name = "onnx" },
-    { name = "packaging" },
-    { name = "protobuf" },
-]
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/4a/67/8dca1868a6e226f8d3f7d666cb6a48b79a60aad5267b16b24627cd8d9eb8/onnxconverter_common-1.16.0-py2.py3-none-any.whl", hash = "sha256:df39ee96f17fff119dff10dd245467651b60b9e8a96020eb93402239794852f7", size = 89511, upload-time = "2025-08-28T19:37:46.988Z" },
-]
-
-[[package]]
 name = "onnxruntime"
 version = "1.31.1"
 source = { registry = "https://pypi.org/simple" }
@@ -1348,7 +1334,6 @@ climate = [
 train = [
     { name = "lightgbm" },
     { name = "onnx" },
-    { name = "onnxconverter-common" },
     { name = "onnxruntime" },
     { name = "onnxscript" },
     { name = "soundfile" },
@@ -1374,7 +1359,6 @@ requires-dist = [
     { name = "matplotlib", specifier = ">=3.9" },
     { name = "numpy", specifier = ">=1.26" },
     { name = "onnx", marker = "extra == 'train'", specifier = ">=1.17" },
-    { name = "onnxconverter-common", marker = "extra == 'train'", specifier = ">=1.14" },
     { name = "onnxruntime", marker = "extra == 'train'", specifier = ">=1.20" },
     { name = "onnxscript", marker = "extra == 'train'", specifier = ">=0.1" },
     { name = "pandas", specifier = ">=2.2" },
