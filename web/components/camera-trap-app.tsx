@@ -212,7 +212,7 @@ export function CameraTrapApp() {
         setProgress({ done: position + 1, total: images.length });
       }
     } catch (failure) {
-      console.error(failure);
+      console.warn("Identification failed", failure);
       setError("The detection model could not be loaded. Camera trap mode is unavailable here.");
     } finally {
       setStatus(null);

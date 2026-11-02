@@ -257,7 +257,7 @@ export function IdentifyApp() {
           ? "The models could not be downloaded. Check your connection and try again."
           : "Something went wrong while identifying this. Try again, or use a different file.",
       );
-      console.error(failure);
+      console.warn("Identification failed", failure);
     } finally {
       setStatus(null);
       setProgress(null);
