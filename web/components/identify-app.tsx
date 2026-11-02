@@ -102,7 +102,7 @@ export function IdentifyApp() {
   const [image, setImage] = useState<LoadedImage | null>(null);
   const [audio, setAudio] = useState<{ blob: Blob; name: string } | null>(null);
   const [place, setPlace] = useState<Place | null>(null);
-  const [date, setDate] = useState(() => localDate(new Date()));
+  const [date, setDate] = useState("");
   const [status, setStatus] = useState<string | null>(null);
   const [progress, setProgress] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -208,7 +208,7 @@ export function IdentifyApp() {
         prior = await client.prior(
           place.latitude,
           place.longitude,
-          dayOfYear(new Date(`${date}T12:00:00`)),
+          dayOfYear(new Date(`${date || localDate(new Date())}T12:00:00`)),
         );
       }
 
@@ -338,8 +338,8 @@ export function IdentifyApp() {
           ) : null}
         </div>
 
-        <div className="max-w-52 space-y-1.5">
-          <Label htmlFor="observation-date">Date seen</Label>
+        <div className="max-w-64 space-y-1.5">
+          <Label htmlFor="observation-date">Date seen (leave empty for today)</Label>
           <Input
             id="observation-date"
             type="date"
@@ -455,7 +455,7 @@ export function IdentifyApp() {
               metadata={result.metadata}
               analysis={result.analysis}
               place={place && !outside ? place : null}
-              date={date}
+              date={date || localDate(new Date())}
             />
 
             <p className="text-xs text-muted-foreground">

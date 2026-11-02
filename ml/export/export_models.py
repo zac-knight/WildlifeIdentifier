@@ -4,8 +4,9 @@
     uv run python export/export_models.py audio
     uv run python export/export_models.py fewshot
 
-Each model produces a metadata JSON with its calibration values and file checksums. A file only ships
-if it passes the checks: PyTorch parity for fp32 and fp16, and a measured accuracy loss of no more
+Each model produces a metadata JSON with calibration values and file checksums. A file ships
+only if it passes the checks: PyTorch parity for fp32 and fp16, and a measured accuracy loss of
+no more
 than one percentage point for every variant.
 """
 

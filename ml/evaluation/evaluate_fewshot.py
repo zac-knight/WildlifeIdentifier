@@ -119,7 +119,7 @@ def main() -> None:
     results["classifier_plus_prototypes"] = group(blended)
     results["prototypes_alone"] = group(prototype_only)
 
-    # Pure prototype performance at each shot count needs no retraining, so all of them are reported.
+    # Pure prototype results at each shot count need no retraining, so all are reported.
     for shots in (5, 10, 20):
         subset = d.select_training(frame, "split_random", shots)
         subset_rows = np.array([position[p] for p in subset["photo_id"]])
@@ -130,7 +130,7 @@ def main() -> None:
             (test_features @ built.T)[test_tail], y_test[test_tail]
         )
 
-    # The product keeps all available images, so its prototypes are rebuilt from the full training set.
+    # The product keeps all available images, so prototypes are rebuilt from the full set.
     final = d.select_training(frame, "split_random", None)
     final_rows = np.array([position[p] for p in final["photo_id"]])
     final_prototypes, _ = build_prototypes(
