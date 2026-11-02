@@ -254,7 +254,7 @@ export function IdentifyApp() {
       const message = failure instanceof Error ? failure.message : "";
       setError(
         /details|Download|Failed to fetch|integrity/i.test(message)
-          ? "The models could not be downloaded. Check your connection and try again."
+          ? "The models could not be loaded. They may not be available yet, or your connection may have dropped."
           : "Something went wrong while identifying this. Try again, or use a different file.",
       );
       console.warn("Identification failed", failure);
