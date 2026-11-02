@@ -6,3 +6,5 @@ next-env.d.ts
 public/data
 data
 tests/fixtures
+drizzle
+public

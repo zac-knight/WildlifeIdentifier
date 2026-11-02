@@ -8,8 +8,6 @@ const isolation = [
 ];
 
 const nextConfig: NextConfig = {
-  cacheComponents: true,
-  partialPrefetching: true,
   turbopack: {
     rules: {
       "*.css": {
@@ -26,6 +24,14 @@ const nextConfig: NextConfig = {
     return [
       { source: "/identify", headers: isolation },
       { source: "/camera-trap", headers: isolation },
+      // Worker scripts must carry these too, or an isolated page's browser refuses to start them.
+      {
+        source: "/_next/static/:path*",
+        headers: [
+          { key: "Cross-Origin-Embedder-Policy", value: "credentialless" },
+          { key: "Cross-Origin-Resource-Policy", value: "same-origin" },
+        ],
+      },
     ];
   },
 };

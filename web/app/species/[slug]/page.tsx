@@ -9,6 +9,9 @@ interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
+// Only the known species exist, so anything else is a real 404.
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return allSpecies.map((species) => ({ slug: species.slug }));
 }

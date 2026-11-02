@@ -11,7 +11,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "vitest run",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "build:e2e": "NEXT_PUBLIC_MODEL_BASE_URL=/e2e-models next build"
   },
   "dependencies": {
     "@ai-sdk/google": "^4.0.109",

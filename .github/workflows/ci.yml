@@ -26,6 +26,8 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - run: npm run build
+      # Browser tests use tiny committed models, because trained models are too large for CI.
+      - run: npm run build:e2e
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
 
