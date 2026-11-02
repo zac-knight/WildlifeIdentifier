@@ -1,0 +1,23 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.7.4
+    hooks:
+      - id: ruff
+        args: [--fix]
+        files: ^ml/
+      - id: ruff-format
+        files: ^ml/
+  - repo: local
+    hooks:
+      - id: web-lint
+        name: web lint
+        entry: bash -c 'cd web && npm run lint'
+        language: system
+        files: ^web/
+        pass_filenames: false
+      - id: web-format
+        name: web format
+        entry: bash -c 'cd web && npm run format:check'
+        language: system
+        files: ^web/
+        pass_filenames: false

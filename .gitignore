@@ -1,0 +1,23 @@
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Local data and model artefacts: regenerate with the scripts in ml/
+data/*
+!data/README.md
+models/*
+!models/README.md
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+wandb/
+
+# OS and editors
+.DS_Store
+.vscode/
+.idea/
