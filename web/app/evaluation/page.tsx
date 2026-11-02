@@ -195,10 +195,10 @@ export default function EvaluationPage() {
 
       <Section title="Recognising unfamiliar inputs">
         <p className="max-w-prose text-sm">
-          Near means Australian birds outside the model&apos;s 200 species, which is hard. Far means
-          other wildlife and plants. AUROC is 100% for perfect separation and 50% for guessing.
-          False accept is the share of unknown photos still treated as known, at a threshold keeping
-          95% of known-species validation photos.
+          Near means Australian birds outside the model&apos;s species list, which is hard. Far
+          means other wildlife and plants. AUROC is 100% for perfect separation and 50% for
+          guessing. False accept is the share of unknown photos still treated as known, at a
+          threshold keeping 95% of known-species validation photos.
         </p>
         <div className="overflow-x-auto">
           <table className="w-full min-w-[28rem] text-left text-sm tabular-nums">
@@ -240,7 +240,7 @@ export default function EvaluationPage() {
 
       <Section title="Species with few training photos">
         <p className="max-w-prose text-sm">
-          For this test, 40 species were limited to 10 training photos. Prototype matching is only
+          For this test, 60 species were limited to 10 training photos. Prototype matching is only
           used when the classifier is unsure.
         </p>
         <MetricTable
@@ -343,9 +343,7 @@ export default function EvaluationPage() {
 
       <Section title="Known limitations">
         <ul className="max-w-prose list-disc space-y-1 pl-5 text-sm">
-          <li>
-            Only 200 commonly photographed species are covered, so rare birds get wrong names.
-          </li>
+          <li>Only species with enough photos are covered, so the rarest birds get wrong names.</li>
           <li>
             Photos come from iNaturalist users, who favour cities, roads and easily seen birds.
           </li>

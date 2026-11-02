@@ -5,7 +5,7 @@ models are for non-commercial use, because their training data includes non-comm
 
 ## Image classifier
 
-- **Intended use:** Suggesting which of 200 common Australian birds appears in a photo, as a starting
+- **Intended use:** Suggesting which of 550 Australian birds appears in a photo, as a starting
   point for people to check.
 - **Not for:** Rare species records, regulatory or conservation decisions, or birds outside Australia.
 - **Architecture:** EfficientNetV2-B2 from ImageNet weights, 224 px input.

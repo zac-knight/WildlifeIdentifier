@@ -1,5 +1,11 @@
 from wildlens.config import PHOTO_LICENCES
-from wildlens.records import occurrence_row, parse_location, photo_row, sound_row
+from wildlens.records import (
+    occurrence_row,
+    parse_location,
+    photo_row,
+    prefer_downloaded,
+    sound_row,
+)
 
 PHOTO_URL = "https://inaturalist-open-data.s3.amazonaws.com/photos/9/square.jpg?123"
 
@@ -87,3 +93,9 @@ def test_other_occurrence_has_no_inaturalist_id() -> None:
         "catalogNumber": "333",
     }
     assert occurrence_row(record)["inat_observation_id"] is None
+
+
+def test_downloaded_files_come_first_and_order_is_kept() -> None:
+    items = [{"id": 1}, {"id": 2}, {"id": 3}, {"id": 4}]
+    ordered = prefer_downloaded(items, lambda item: item["id"] in {2, 4})
+    assert [item["id"] for item in ordered] == [2, 4, 1, 3]

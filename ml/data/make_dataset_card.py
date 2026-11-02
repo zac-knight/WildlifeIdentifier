@@ -58,8 +58,8 @@ def main() -> None:
         recorded = sounds.groupby("species").size()
         sound_section = (
             f"{len(sounds):,} recordings across {recorded.size} species, "
-            f"with a median of {recorded.median():.0f} per species and at most 100. "
-            f"{200 - recorded.size} species have none.\n\n"
+            f"with a median of {recorded.median():.0f} per species and at most 200. "
+            f"{per_species.size - recorded.size} species have none.\n\n"
             + table(sounds["licence"].value_counts(), "Sound licence")
         )
 
@@ -79,7 +79,7 @@ them, and every file's source, licence and attribution are in its manifest.
 | Classifier photos after deduplication | {len(classifier):,} |
 | Photos per species | {per_species.min()} to {per_species.max()}, median {per_species.median():.0f} |
 | Photos removed as duplicate or unreadable | {len(raw) - len(photos):,} |
-| Near-OOD photos (Australian birds outside the 200) | {(photos["role"] == "ood").sum():,} |
+| Near-OOD photos (Australian birds outside the classifier list) | {(photos["role"] == "ood").sum():,} |
 | Far-OOD photos (other wildlife, plants and fungi) | {len(far):,} |
 | Occurrence records | {len(occurrences):,}, of which {len(au):,} in Australia |
 
@@ -114,13 +114,13 @@ Stratified by species, with an observer in only one split per species |
 {(classifier["split_geo"] == "val").sum():,} | {(classifier["split_geo"] == "test").sum():,} | \
 Whole 2-degree blocks held out |
 
-The geographic split excludes photos without a usable coordinate. Forty species spread across the
+The geographic split excludes photos without a usable coordinate. Sixty species spread across the
 abundance ranking are the tail set. Their training photos are capped at 5, 10 or 20 for the
 few-shot experiment, with those sets nested inside one another.
 
 ## Known biases
 
-- **Common species only.** The 200 most-photographed species, so rare birds are absent.
+- **Common species only.** Only species with at least 100 usable observations, so the rarest birds are absent.
 - **Observer behaviour.** Records cluster near cities and roads, and the top 1% of observers
   contributed {top_share:.0%} of the classifier photos.
 - **Recency.** The API pages only the newest 10,000 records per query, so the commonest species skew

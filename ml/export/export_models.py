@@ -108,7 +108,7 @@ def export_image() -> None:
     export_onnx(HalfImageForExport(model).eval(), example, paths["fp16"], ["image"], outputs)
 
     frame = d.load_photos()
-    sample = validation_sample(frame, index, min(2000, 2000))
+    sample = validation_sample(frame, index, 5000)
     calibration = sample.sample(200, random_state=SEED)
     transform = d.eval_transform()
     batches = [

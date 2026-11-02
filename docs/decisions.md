@@ -130,3 +130,15 @@ Each entry records a significant choice, the alternatives considered and the rea
 - **Decision:** `/identify` and `/camera-trap` use `COEP: credentialless` for multithreaded WebAssembly,
   and `/_next/static/*` carries matching headers.
 - **Reason:** Without them, the browser refused to start the worker. Only a real browser test showed this.
+
+## D-014: Expanded to 550 species and up to 1,000 photos each
+
+- **Decision:** At the owner's request, grow from 200 species and 300 photos each (about 60,000) to
+  550 species and 1,000 photos each (about 386,000). Sound rises to 200 recordings per species.
+- **Alternatives:** All 831 species was rejected, because over 250 have fewer than 100 observations,
+  leaving too few to test fairly. A higher photo cap adds download and storage with falling returns.
+- **Run time:** Each epoch draws at most 150,000 balanced images, which keeps a training run at about
+  8 hours on the M4 rather than about 15. Rare species repeat more often, so augmentation matters.
+- **Reuse:** Selections are seeded per species and prefer files on disk, so earlier downloads count.
+- **Benefit:** A real long tail now exists, and species such as close relatives of common birds are
+  classes rather than unknowns.

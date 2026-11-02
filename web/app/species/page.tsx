@@ -14,7 +14,7 @@ export default function SpeciesPage() {
         <h1 className="text-4xl font-semibold">Species</h1>
         <p className="text-muted-foreground">
           WildLens knows {allSpecies.length} Australian birds, chosen because iNaturalist holds many
-          openly licensed photos of them. Rarer species are not included yet.
+          openly licensed photos of them. The rarest species are not included yet.
         </p>
       </header>
       <SpeciesBrowser />

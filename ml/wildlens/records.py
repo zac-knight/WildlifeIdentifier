@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Iterable, Mapping
+from collections.abc import Callable, Iterable, Mapping
 from typing import Any
 
 from wildlens.config import INAT_PHOTO_HOST, MAX_POSITIONAL_ACCURACY_M
@@ -101,3 +101,12 @@ def occurrence_row(record: Mapping[str, Any]) -> dict[str, Any] | None:
         if institution == "iNaturalist"
         else None,
     }
+
+
+def prefer_downloaded(items: list[dict], is_downloaded: Callable[[dict], bool]) -> list[dict]:
+    """Move files already on disk to the front, keeping the order otherwise.
+
+    Items arrive in random order, so files from an earlier run are themselves a random sample.
+    Reusing them adds no bias and avoids downloading again when a cap is raised.
+    """
+    return sorted(items, key=lambda item: not is_downloaded(item))

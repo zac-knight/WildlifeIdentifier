@@ -37,7 +37,9 @@ export function SpeciesBrowser() {
         {matches.length} {matches.length === 1 ? "species" : "species"}
       </p>
       {matches.length === 0 ? (
-        <p className="text-sm">No species match that search. WildLens covers 200 species so far.</p>
+        <p className="text-sm">
+          No species match that search. WildLens only covers species with enough training photos.
+        </p>
       ) : (
         <ul className="grid gap-x-6 gap-y-px sm:grid-cols-2 lg:grid-cols-3">
           {matches.map((species) => (

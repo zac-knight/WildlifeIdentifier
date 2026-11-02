@@ -49,6 +49,9 @@ def main() -> None:
     parser.add_argument("--lr", type=float, default=1e-3)
     parser.add_argument("--workers", type=int, default=6)
     parser.add_argument("--limit", type=int, help="Use only this many rows, for smoke tests")
+    # A fixed number of draws keeps run time steady as the dataset grows. Balanced sampling means
+    # a capped epoch still sees every species equally, and later epochs draw different photos.
+    parser.add_argument("--samples-per-epoch", type=int, default=150_000)
     args = parser.parse_args()
 
     random.seed(SEED)
@@ -73,12 +76,12 @@ def main() -> None:
         "persistent_workers": args.workers > 0,
         "pin_memory": device.type == "cuda",
     }
-    # One epoch draws as many images as the set holds, with species balanced per draw.
+    samples = min(args.samples_per_epoch, len(train))
     weights = torch.as_tensor(d.balanced_weights(y_train, len(names)), dtype=torch.double)
     train_loader = DataLoader(
         d.PhotoDataset(train["file_path"].tolist(), y_train, d.train_transform()),
         batch_size=args.batch_size,
-        sampler=WeightedRandomSampler(weights, len(train), replacement=True),
+        sampler=WeightedRandomSampler(weights, samples, replacement=True),
         drop_last=True,
         **loader_options,
     )

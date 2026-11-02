@@ -156,7 +156,7 @@ def main() -> None:
         "```",
         "Browser latency on a mid-range laptop has not been measured with the final models.",
         "## Limitations",
-        "- Only 200 commonly photographed species are covered, so anything else gets a wrong name "
+        "- Only 550 species with enough photos are covered, so anything else gets a wrong name "
         "unless flagged as unfamiliar.",
         "- Test photos share iNaturalist's biases, so real-world accuracy may be lower.",
         "- Tuning used half of the validation set, so chosen settings carry some sampling noise.",

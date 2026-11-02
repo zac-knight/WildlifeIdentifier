@@ -114,7 +114,7 @@ on a free cloud GPU, because paths come from environment variables.
 
 ## Limitations
 
-- Only 200 commonly photographed species are covered. Other birds get wrong names unless flagged as
+- Only 550 species with enough photos are covered. Other birds get wrong names unless flagged as
   unfamiliar.
 - Test data shares iNaturalist's biases, so real-world accuracy may be lower.
 - Habitat maps use climate alone at about 25 km, and are projections with substantial uncertainty.

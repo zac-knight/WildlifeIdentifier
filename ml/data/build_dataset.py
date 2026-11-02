@@ -22,7 +22,7 @@ from tqdm import tqdm
 from wildlens import config as c
 from wildlens.dedupe import duplicate_mask
 from wildlens.http import PoliteClient, Throttle
-from wildlens.records import occurrence_row, photo_row, sound_row
+from wildlens.records import occurrence_row, photo_row, prefer_downloaded, sound_row
 from wildlens.splits import choose_tail_species, geographic_split, random_split, tail_shot_rank
 
 STEPS = (
@@ -176,7 +176,6 @@ def observation_pages(
 def step_observations() -> None:
     species = pd.read_csv(c.MANIFEST_DIR / "species.csv")
     client = inat()
-    rng = np.random.default_rng(c.SEED)
     rows: list[dict] = []
     for _, row in tqdm(species.iterrows(), total=len(species), desc="observations"):
         cap = (
@@ -191,7 +190,10 @@ def step_observations() -> None:
             if parsed:
                 found[parsed["observation_id"]] = parsed
         items = list(found.values())
-        rng.shuffle(items)
+        # Seeding per species keeps each selection stable when the species list changes.
+        np.random.default_rng([c.SEED, int(row["inat_taxon_id"])]).shuffle(items)
+        folder = c.PHOTO_DIR / row["species"].replace(" ", "_")
+        items = prefer_downloaded(items, lambda i: (folder / f"{i['photo_id']}.jpg").exists())
         rows += [{**item, "species": row["species"], "role": row["role"]} for item in items[:cap]]
     frame = pd.DataFrame(rows)
     frame["file_path"] = [
@@ -365,7 +367,6 @@ def step_sounds() -> None:
     species = pd.read_csv(c.MANIFEST_DIR / "species.csv")
     species = species[species["role"] == "classifier"]
     client = inat()
-    rng = np.random.default_rng(c.SEED)
     rows: list[dict] = []
     for _, row in tqdm(species.iterrows(), total=len(species), desc="sound records"):
         extra = {"sound_license": ",".join(c.SOUND_LICENCES), "sounds": "true"}
@@ -375,7 +376,9 @@ def step_sounds() -> None:
             if parsed:
                 found[parsed["observation_id"]] = parsed
         items = list(found.values())
-        rng.shuffle(items)
+        np.random.default_rng([c.SEED, int(row["inat_taxon_id"])]).shuffle(items)
+        folder = c.SOUND_DIR / row["species"].replace(" ", "_")
+        items = prefer_downloaded(items, lambda i: any(folder.glob(f"{i['sound_id']}.*")))
         rows += [{**item, "species": row["species"]} for item in items[: c.MAX_SOUNDS_PER_SPECIES]]
     frame = pd.DataFrame(rows)
     frame["file_path"] = [

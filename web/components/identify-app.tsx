@@ -68,7 +68,7 @@ function headline(analysis: Analysis): { title: string; detail: string } {
     return {
       title: "This may not be a bird WildLens knows",
       detail:
-        "The photo looks unlike the 200 Australian species the model was trained on. It could be another species, or not a bird. Treat the options below as weak guesses.",
+        "The photo looks unlike the Australian species the model was trained on. It could be another species, or not a bird. Treat the options below as weak guesses.",
     };
   }
   switch (decision.level) {

@@ -29,12 +29,13 @@ PHOTO_LICENCES = ("cc0", "cc-by", "cc-by-nc")
 # Sounds: the owner also approved share-alike. No-derivatives files are never used.
 SOUND_LICENCES = ("cc0", "cc-by", "cc-by-nc", "cc-by-sa", "cc-by-nc-sa")
 
-TARGET_SPECIES = 200
-TAIL_SPECIES = 40
+# Every species with at least 100 usable observations. Rarer ones have too few photos to test fairly.
+TARGET_SPECIES = 550
+TAIL_SPECIES = 60
 OOD_SPECIES = 40
-MAX_PHOTOS_PER_SPECIES = 300
+MAX_PHOTOS_PER_SPECIES = 1000
 MAX_OOD_PHOTOS_PER_SPECIES = 40
-MAX_SOUNDS_PER_SPECIES = 100
+MAX_SOUNDS_PER_SPECIES = 200
 # Tail species are artificially capped at these training sizes for the few-shot evaluation.
 TAIL_SHOTS = (5, 10, 20)
 OCCURRENCE_PAGES_AU = 8
