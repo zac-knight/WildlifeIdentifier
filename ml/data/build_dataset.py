@@ -47,6 +47,19 @@ GBIF_NAME_OVERRIDES = {
     "Butorides atricapilla": "Butorides striata",
     "Ardea coromanda": "Bubulcus coromandus",
     "Cinnyris frenatus": "Cinnyris jugularis",
+    "Eopsaltria capito": "Tregellasia capito",
+    "Tachyspiza novaehollandiae": "Accipiter novaehollandiae",
+    "Anarhynchus bicinctus": "Charadrius bicinctus",
+    "Anarhynchus mongolus": "Charadrius mongolus",
+    "Psitteuteles porphyrocephalus": "Parvipsitta porphyrocephala",
+    "Psitteuteles pusillus": "Parvipsitta pusilla",
+    "Chloris chloris": "Carduelis chloris",
+    "Emblema modestum": "Neochmia modesta",
+    "Emblema ruficauda": "Neochmia ruficauda",
+    "Meliphaga imitatrix": "Microptilotis imitatrix",
+    "Botaurus flavicollis": "Dupetor flavicollis",
+    "Botaurus dubius": "Ixobrychus dubius",
+    "Melanodryas pulverulenta": "Peneoenanthe pulverulenta",
 }
 FAR_OOD_TAXA = ("Mammalia", "Reptilia", "Amphibia", "Insecta", "Plantae", "Fungi")
 
@@ -193,7 +206,9 @@ def step_observations() -> None:
         # Seeding per species keeps each selection stable when the species list changes.
         np.random.default_rng([c.SEED, int(row["inat_taxon_id"])]).shuffle(items)
         folder = c.PHOTO_DIR / row["species"].replace(" ", "_")
-        items = prefer_downloaded(items, lambda i: (folder / f"{i['photo_id']}.jpg").exists())
+        items = prefer_downloaded(
+            items, lambda i, base=folder: (base / f"{i['photo_id']}.jpg").exists()
+        )
         rows += [{**item, "species": row["species"], "role": row["role"]} for item in items[:cap]]
     frame = pd.DataFrame(rows)
     frame["file_path"] = [
@@ -378,7 +393,9 @@ def step_sounds() -> None:
         items = list(found.values())
         np.random.default_rng([c.SEED, int(row["inat_taxon_id"])]).shuffle(items)
         folder = c.SOUND_DIR / row["species"].replace(" ", "_")
-        items = prefer_downloaded(items, lambda i: any(folder.glob(f"{i['sound_id']}.*")))
+        items = prefer_downloaded(
+            items, lambda i, base=folder: any(base.glob(f"{i['sound_id']}.*"))
+        )
         rows += [{**item, "species": row["species"]} for item in items[: c.MAX_SOUNDS_PER_SPECIES]]
     frame = pd.DataFrame(rows)
     frame["file_path"] = [

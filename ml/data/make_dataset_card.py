@@ -130,6 +130,8 @@ few-shot experiment, with those sets nested inside one another.
   under-represented in the geographic split.
 - **Occurrence sources.** {inat_share:.0%} of occurrence records come from iNaturalist. Those
   matching held-out test photos are removed from prior training by observation ID.
+- **Taxonomy mismatches.** GBIF merges some species that iNaturalist separates. Grey Butcherbird and
+  Silver-backed Butcherbird share one GBIF key, so their location and habitat data are the same.
 - **Conservation status.** Global IUCN categories via GBIF, not Australian listings. Threatened
   species in the classifier set: {", ".join(threatened) or "none"}.
 
