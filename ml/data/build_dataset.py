@@ -39,6 +39,7 @@ THREATENED = {"VU", "EN", "CR", "EW", "EX"}
 # iNaturalist adopts new names sooner than the GBIF backbone. These map each label to the name GBIF
 # uses for occurrence lookups only. The label shown to users stays the iNaturalist name.
 GBIF_NAME_OVERRIDES = {
+    "Trichoglossus concinnus": "Glossopsitta concinna",
     "Thinornis melanops": "Elseyornis melanops",
     "Anarhynchus ruficapillus": "Charadrius ruficapillus",
     "Tachyspiza fasciata": "Accipiter fasciatus",
@@ -84,12 +85,20 @@ def step_species() -> None:
         page += 1
 
     backbone = gbif()
+    results = results[:wanted]
+    # Family and genus come from iNaturalist, so taxonomy always agrees with the labels.
+    ancestry: dict[int, dict[str, str]] = {}
+    for start in range(0, len(results), 30):
+        ids = ",".join(str(r["taxon"]["id"]) for r in results[start : start + 30])
+        for taxon in client.get_json(f"{c.INAT_API}/taxa/{ids}", {"per_page": 30})["results"]:
+            ancestry[taxon["id"]] = {a["rank"]: a["name"] for a in taxon.get("ancestors", [])}
     rows = []
-    for item in tqdm(results[:wanted], desc="taxonomy"):
+    for item in tqdm(results, desc="taxonomy"):
         taxon = item["taxon"]
+        lookup = GBIF_NAME_OVERRIDES.get(taxon["name"], taxon["name"])
         match = backbone.get_json(
             f"{c.GBIF_API}/species/match",
-            {"name": taxon["name"], "class": "Aves", "strict": "true"},
+            {"name": lookup, "class": "Aves", "strict": "true"},
         )
         key = match.get("speciesKey") or match.get("usageKey")
         red_list: dict = {}
