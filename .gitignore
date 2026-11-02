@@ -21,6 +21,10 @@ wandb/
 .next/
 node_modules/
 
+# The npm project is in web/. Running npm here would create an empty lockfile.
+/package-lock.json
+/package.json
+
 # OS and editors
 .DS_Store
 .vscode/

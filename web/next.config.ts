@@ -1,3 +1,4 @@
+import path from "node:path";
 import type { NextConfig } from "next";
 
 // Multithreaded WebAssembly needs cross-origin isolation. `credentialless` still allows map tiles
@@ -8,7 +9,9 @@ const isolation = [
 ];
 
 const nextConfig: NextConfig = {
+  // The npm project lives in web/, so a lockfile elsewhere must not change the detected root.
   turbopack: {
+    root: path.join(__dirname),
     rules: {
       "*.css": {
         loaders: ["@tailwindcss/turbopack"],
@@ -16,6 +19,7 @@ const nextConfig: NextConfig = {
       },
     },
   },
+  outputFileTracingRoot: path.join(__dirname),
   images: {
     // Vercel's free tier limits image transformations. Sources already provide suitable sizes.
     unoptimized: true,
