@@ -17,6 +17,10 @@ __pycache__/
 .ruff_cache/
 wandb/
 
+# Build output
+.next/
+node_modules/
+
 # OS and editors
 .DS_Store
 .vscode/
