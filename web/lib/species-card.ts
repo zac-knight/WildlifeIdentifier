@@ -5,29 +5,9 @@ import { z } from "zod";
 import type { Database } from "./db/client";
 import { speciesCards } from "./db/schema";
 import { iucnLabel, type Species } from "./species";
+import type { Claim, Source, SpeciesCard } from "./species-card-types";
 
-export interface Source {
-  id: string;
-  title: string;
-  url: string;
-  licence: string;
-  text: string;
-}
-
-export interface Claim {
-  text: string;
-  sourceId: string;
-}
-
-export interface SpeciesCard {
-  species: string;
-  /** "llm" text was written from the sources. "facts" shows the sources directly. */
-  mode: "llm" | "facts";
-  claims: Claim[];
-  sources: Source[];
-  generatedAt: string;
-  sourceRevision: string | null;
-}
+export type { Claim, Source, SpeciesCard } from "./species-card-types";
 
 const USER_AGENT =
   "WildLens/0.1 (non-commercial portfolio; github.com/zac-knight/WildlifeIdentifier)";

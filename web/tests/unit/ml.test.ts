@@ -10,6 +10,14 @@ import {
 } from "@/lib/ml/fusion";
 import { energyScore, entropy, logSoftmax, softmax, topK } from "@/lib/ml/math";
 import { preprocess, resizedDimensions } from "@/lib/ml/preprocess";
+import {
+  climateAt,
+  type ClimateGrid,
+  classifyChange,
+  decodePixel,
+  paintChange,
+  paintSuitability,
+} from "@/lib/sdm";
 import vectors from "../fixtures/python_vectors.json";
 
 const { fusion, hierarchy, images } = vectors;
@@ -195,5 +203,62 @@ describe("audio", () => {
 
   test("stereo mixes to mono", () => {
     expect(Array.from(toMono([Float32Array.of(1, 0), Float32Array.of(0, 1)]))).toEqual([0.5, 0.5]);
+  });
+});
+
+describe("habitat maps", () => {
+  test("pixels decode from layer channels", () => {
+    expect(decodePixel(255, 255, 255, 128)).toEqual({
+      suitability: 1,
+      robust: true,
+      land: true,
+      novel: true,
+    });
+    expect(decodePixel(0, 0, 0, 255).land).toBe(false);
+  });
+
+  test.each([
+    [0.8, 0.8, "kept"],
+    [0.8, 0.2, "lost"],
+    [0.2, 0.8, "gained"],
+    [0.2, 0.2, "none"],
+  ] as const)("present %s and future %s is %s", (present, future, expected) => {
+    expect(classifyChange(present, future, 0.5)).toBe(expected);
+  });
+
+  test("ocean stays transparent", () => {
+    const output = paintSuitability(Uint8ClampedArray.of(200, 255, 0, 255), 1);
+    expect(output[3]).toBe(0);
+  });
+
+  test("disputed change is fainter than agreed change", () => {
+    const present = Uint8ClampedArray.of(0, 255, 255, 255);
+    const agreed = paintChange(present, Uint8ClampedArray.of(255, 255, 255, 255), 0.5);
+    const disputed = paintChange(present, Uint8ClampedArray.of(255, 0, 255, 255), 0.5);
+    expect(disputed[3]).toBeLessThan(agreed[3]);
+  });
+
+  const grid: ClimateGrid = {
+    top: -9,
+    left: 112,
+    cell: 0.5,
+    present: [[20, null]],
+    scenarios: Object.fromEntries(
+      ["ssp245_2050", "ssp245_2070", "ssp585_2050", "ssp585_2070"].map((name) => [
+        name,
+        { median: [[22, null]], p10: [[21, null]], p90: [[23, null]] },
+      ]),
+    ) as ClimateGrid["scenarios"],
+  };
+
+  test("climate lookup reads the right cell", () => {
+    const result = climateAt(grid, -9.2, 112.2);
+    expect(result?.present).toBe(20);
+    expect(result?.points[0]).toMatchObject({ median: 22, low: 21, high: 23 });
+  });
+
+  test("ocean and out-of-range clicks give no climate", () => {
+    expect(climateAt(grid, -9.2, 112.7)).toBeNull();
+    expect(climateAt(grid, 40, 0)).toBeNull();
   });
 });
